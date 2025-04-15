@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  ssh-monitor:
+    build: .
+    container_name: ssh-monitor
+    ports:
+      - "2222:22"  # Map container's SSH port to host's 2222
+    volumes:
+      - ./logs:/var/log  # Mount logs directory for persistence
+    privileged: true  # Required for iptables
+    environment:
+      - SLACK_TOKEN=${SLACK_TOKEN}
+      - SLACK_CHANNEL=${SLACK_CHANNEL}
+    restart: unless-stopped 
